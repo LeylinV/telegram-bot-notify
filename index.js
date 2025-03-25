@@ -155,7 +155,7 @@ bot.on('callback_query', (query) => {
 });
 
 // Запуск cron-задачи каждый час с 15:00 до 24:00
-cron.schedule('0 * 15-23 * * *', () => {
+cron.schedule('0 15-23 * * *', () => {
     Object.keys(userState).forEach(chatId => {
         if (!userState[chatId].stopped) {
             sendQuestion(chatId);
