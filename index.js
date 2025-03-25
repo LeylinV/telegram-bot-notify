@@ -67,6 +67,7 @@ function confirmCompletion(chatId) {
 
     if (userState[chatId].completedToday) {
         bot.sendMessage(chatId, `Ты уже подтверждал выполнение задачи сегодня! Твой текущий стрик: ${userState[chatId].streak}`);
+        return;
     }
     
     userState[chatId].stopped = true;
@@ -154,17 +155,12 @@ bot.on('callback_query', (query) => {
 });
 
 // Запуск cron-задачи каждый час с 15:00 до 24:00
-cron.schedule('* 15-23 * * *', () => {
-    const now = new Date();
-    const currentHour = now.getHours();
-
-    if (currentHour >= 15 && currentHour < 24) {
-        Object.keys(userState).forEach(chatId => {
-            if (!userState[chatId].stopped) {
-                sendQuestion(chatId);
-            }
-        });
-    }
+cron.schedule('0 * 15-23 * * *', () => {
+    Object.keys(userState).forEach(chatId => {
+        if (!userState[chatId].stopped) {
+            sendQuestion(chatId);
+        }
+    });
 }, {
     timezone: "Asia/Yekaterinburg"
 });
