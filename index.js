@@ -4,6 +4,14 @@ const fs = require('fs');
 const path = require('path');
 
 const token = process.env.TELEGRAM_BOT_TOKEN;
+
+if (!token) {
+    console.error('Ошибка: Токен бота не найден в переменных окружения!');
+    console.log('Текущие переменные:', process.env); // Для дебага
+    process.exit(1);
+  }
+  console.log('Бот запускается с токеном:', token.slice(0, 5) + '...'); // Логируем часть токена для проверки
+
 const bot = new TelegramBot(token, { polling: true, request: {
     agentOptions: {
         keepAlive: true,
